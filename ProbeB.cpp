@@ -11,7 +11,8 @@
 using namespace std;
 
 int main() {
-    long beta = 800000;
+    int beta = 257;
+	int randomNumber = 0;
 	// create my msgQ with key value from ftok()
 	int qid = msgget(ftok(".",'u'), 0);
 
@@ -24,11 +25,11 @@ int main() {
 	buf msg;
 	int size = sizeof(msg)-sizeof(long);
 
-	
-   while(true) {
-        msg.mtype = rand();
-        if (beta % msg.mtype != 0){
-            strncpy(msg.greeting, "Probe B Hello", 15);
+	int mtype = 167;
+   	while(true) {
+        randomNumber = rand();
+        if (randomNumber % beta == 0){
+            strncpy(msg.greeting, randomNumber, 50);
             msgsnd(qid, (struct msgbuf *)&msg, size, 0);
         }
     }
