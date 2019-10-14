@@ -11,8 +11,8 @@
 using namespace std;
 
 int main() {
-    long alpha = 9000000;
-
+    int alpha = 997;
+	int randomNumber = 101;
 	int qid = msgget(ftok(".",'u'), 0);
 
 	// declare my message buffer
@@ -24,13 +24,16 @@ int main() {
 	int size = sizeof(msg)-sizeof(long);
 
     msg.mtype = 211;
-    while (msg.mtype >= 100){
-        msg.mtype = rand();
-        if (alpha % msg.mtype != 0){
-            strncpy(msg.greeting, "Probe A Hello", 15);
+    while (randomNumber >= 100){
+        randomNumber = rand();
+        if (randomNumber % alpha == 0){
+            strncpy(msg.greeting, (string) randomNumber, 50);
             msgsnd(qid, (struct msgbuf *)&msg, size, 0);
         }
     }
+
+	strncpy(msg.greeting, "ProbeA terminated", 50);
+	msgsnd(qid, (struct msgbuf *)&msg, size, 0);
 	
 
 	cout << getpid() << ": now exits" << endl;
