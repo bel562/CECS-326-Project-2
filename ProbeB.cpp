@@ -1,18 +1,4 @@
-/* 
 
-This is a simple illustration of the use of:
-	ftok, msgget, msgsnd, msgrcv
-
-Program B creates a message queue to be shared with Program A.
-Then, they will pass messages back and forth.
-
-Program A sends the first message and reads the reply. Program A
-also sends a "fake" message to the msgQ that will never be read
-by Program B.
-
-Both child processes use message type mtype = 113 and 114.
-
-*/
 
 #include <sys/types.h>
 #include <sys/ipc.h>
