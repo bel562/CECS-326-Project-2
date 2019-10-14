@@ -21,8 +21,16 @@ int main(){
 
 	buf msg;
 	int size = sizeof(msg)-sizeof(long);
-
-    msgrcv(qid, (struct msgbuf *)&msg, size, 314, 0); // reading
+	boolean check = true; 
+	//We need to handle all probe messages
+	while (check) {
+		msgrcv(qid, (struct msgbuf *)&msg, size, 211, 0);
+		cout << "ProbeA" << msg.greeting << endl;
+		if (msg.greeting.compare("ProbeA terminated") == 0) {
+			
+		}
+	}
+     // reading
 	cout << getpid() << ": (PID) Message Received" << endl;
 	cout << "reply: " << msg.greeting << endl;
 	

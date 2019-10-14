@@ -31,7 +31,7 @@ int main() {
             msgsnd(qid, (struct msgbuf *)&msg, size, 0);
         }
     }
-
+	//Put a condition for message receive from datahub
 	strncpy(msg.greeting, "ProbeA terminated", 50);
 	msgsnd(qid, (struct msgbuf *)&msg, size, 0);
 	
