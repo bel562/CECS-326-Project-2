@@ -29,7 +29,7 @@ int main() {
    	while(true) {
         randomNumber = rand();
         if (randomNumber % beta == 0){
-            strncpy(msg.greeting, randomNumber, 50);
+            strncpy(msg.greeting,  (const char*)randomNumber, 50);
             msgsnd(qid, (struct msgbuf *)&msg, size, 0);
         }
     }

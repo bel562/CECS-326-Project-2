@@ -21,7 +21,7 @@ int main(){
 
 	buf msg;
 	int size = sizeof(msg)-sizeof(long);
-	boolean check = true; 
+	bool check = true; 
 	//We need to handle all probe messages
 	while (check) {
 		msgrcv(qid, (struct msgbuf *)&msg, size, 211, 0);

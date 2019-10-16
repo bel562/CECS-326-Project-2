@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <cstdlib>
+#include <string>
 using namespace std;
 
 int main() {
@@ -27,7 +28,7 @@ int main() {
     while (randomNumber >= 100){
         randomNumber = rand();
         if (randomNumber % alpha == 0){
-            strncpy(msg.greeting, (string) randomNumber, 50);
+            strncpy(msg.greeting, (const char*) randomNumber, 50);
             msgsnd(qid, (struct msgbuf *)&msg, size, 0);
         }
     }
