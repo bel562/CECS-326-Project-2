@@ -26,7 +26,7 @@ int main(){
 	while (check) {
 		msgrcv(qid, (struct msgbuf *)&msg, size, 211, 0);
 		cout << "ProbeA" << msg.greeting << endl;
-		if (msg.greeting.compare("ProbeA terminated") == 0) {
+		if (((string)msg.greeting).compare("ProbeA terminated") == 0) {
 			
 		}
 	}
