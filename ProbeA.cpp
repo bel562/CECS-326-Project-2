@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <cstdlib>
-#include <string>
+
 using namespace std;
 
 int main() {
@@ -30,6 +30,8 @@ int main() {
         if (randomNumber % alpha == 0){
             strncpy(msg.greeting, (const char*) randomNumber, 50);
             msgsnd(qid, (struct msgbuf *)&msg, size, 0);
+			msgrcv(qid, (struct msgbuf *)&msg, size, 311, 0);
+		
         }
     }
 	//Put a condition for message receive from datahub

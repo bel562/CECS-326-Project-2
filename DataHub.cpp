@@ -21,18 +21,33 @@ int main(){
 
 	buf msg;
 	int size = sizeof(msg)-sizeof(long);
-	bool check = true; 
+	msg.mtype = 311;
+	bool A_RunFlag, B_RunFlag, C_RunFlag = true; 
+	
 	//We need to handle all probe messages
-	while (check) {
-		msgrcv(qid, (struct msgbuf *)&msg, size, 211, 0);
-		cout << "ProbeA" << msg.greeting << endl;
-		if (((string)msg.greeting).compare("ProbeA terminated") == 0) {
-			
+	while (A_RunFlag || B_RunFlag || C_RunFlag) {
+		//***********ProbeA*************************
+		msgrcv(qid, (struct msgbuf *)&msg, size, 211, IPC_NOWAIT);
+		cout << "ProbeA Debug: " << msg.greeting << endl;
+		//condition check if probe A sent a message
+		if ((int) msg.greeting != -1) {		
+			cout << "ProbeA" << msg.greeting << endl;
+			//Send confirm rcv message to ProbeA
+			strncpy(msg.greeting,  "Received", 50);
+            msgsnd(qid, (struct msgbuf *)&msg, size, 0);
+			if (((string)msg.greeting).compare("ProbeA terminated") == 0) {
+				//change ProbeA_Active flag to false
+				A_RunFlag = false;
+			}
 		}
+		//***********Probe B********************************
+		// msgrcv(qid, (struct msgbuf *)&msg, size, 211, IPC_NOWAIT);
+		// cout << "ProbeB Debug: " << msg.greeting << endl;
+		// //condition check if probe A sent a message
+		// if ((int) msg.greeting != -1) {		
+		// 	cout << "ProbeB" << msg.greeting << endl;
 	}
-     // reading
-	cout << getpid() << ": (PID) Message Received" << endl;
-	cout << "reply: " << msg.greeting << endl;
+    
 	
     // now safe to delete message queue
 	msgctl (qid, IPC_RMID, NULL);
