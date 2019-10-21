@@ -19,7 +19,7 @@ int main() {
 	// declare my message buffer
 	struct buf {
 		long mtype; // required
-		char greeting[50]; // mesg content
+		int greeting; // mesg content
 	};
 	buf msg;
 	int size = sizeof(msg)-sizeof(long);
@@ -28,14 +28,17 @@ int main() {
     while (randomNumber >= 100){
         randomNumber = rand();
         if (randomNumber % alpha == 0){
-            strncpy(msg.greeting, (const char*) randomNumber, 50);
+            msg.greeting = randomNumber;
             msgsnd(qid, (struct msgbuf *)&msg, size, 0);
+			cout << ": now sending " << msg.greeting << endl;
+
+			//Receive Message From Datahub
 			msgrcv(qid, (struct msgbuf *)&msg, size, 311, 0);
 		
         }
     }
-	//Put a condition for message receive from datahub
-	strncpy(msg.greeting, "ProbeA terminated", 50);
+	//Send ProbeA Finished to Datahub
+	//strncpy(msg.greeting, "ProbeA terminated", 50);
 	msgsnd(qid, (struct msgbuf *)&msg, size, 0);
 	
 

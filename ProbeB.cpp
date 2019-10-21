@@ -12,7 +12,7 @@ using namespace std;
 
 int main() {
     int beta = 257;
-	int randomNumber = 0;
+	long randomNumber = 0;
 	// create my msgQ with key value from ftok()
 	int qid = msgget(ftok(".",'u'), 0);
 
