@@ -18,26 +18,23 @@ int main(){
 	// declare my message buffer
 	struct buf {
 		long mtype; // required
-		char greeting[50]; // mesg content
+		int greeting; // mesg content
+		int PID;
 	};
 
 	buf msg;
+	msg.PID = getpid();
 	int size = sizeof(msg)-sizeof(long);
 
 	int mtype = 123;
    	while(true) {
         randomNumber = rand();
         if (randomNumber % rho == 0){
-            strncpy(msg.greeting,  (const char*)randomNumber, 50);
+            msg.greeting = randomNumber;
             msgsnd(qid, (struct msgbuf *)&msg, size, 0);
         }
     }
 	
 
-	cout << getpid() << ": now exits" << endl;
-
-
-
-	exit(0);
 
 }

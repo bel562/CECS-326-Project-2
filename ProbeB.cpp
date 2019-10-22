@@ -19,26 +19,25 @@ int main() {
 	// declare my message buffer
 	struct buf {
 		long mtype; // required
-		char greeting[50]; // mesg content
+		int greeting; // mesg content
+		int PID;
 	};
 
 	buf msg;
+	msg.PID = getpid();
 	int size = sizeof(msg)-sizeof(long);
 
 	int mtype = 167;
+	//sync with DataHub
+	msgsnd(qid, (struct msgbuf *)&msg, size, 0);
+	msgrcv(qid, (struct msgbuf *)&msg, size, 312, 0);
    	while(true) {
         randomNumber = rand();
         if (randomNumber % beta == 0){
-            strncpy(msg.greeting,  (const char*)randomNumber, 50);
+            msg.greeting = randomNumber;
             msgsnd(qid, (struct msgbuf *)&msg, size, 0);
         }
     }
 	
-
-	cout << getpid() << ": now exits" << endl;
-
-
-
-	exit(0);
 }
 

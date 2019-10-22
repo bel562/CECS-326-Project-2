@@ -20,17 +20,23 @@ int main() {
 	struct buf {
 		long mtype; // required
 		int greeting; // mesg content
+		char termMessage[50]; //messege for termination
+		int PID;
 	};
 	buf msg;
 	int size = sizeof(msg)-sizeof(long);
-
+	msg.PID = getpid();
     msg.mtype = 211;
+
+	//sync with DataHub
+	msgsnd(qid, (struct msgbuf *)&msg, size, 0);
+	msgrcv(qid, (struct msgbuf *)&msg, size, 311, 0);
+	
     while (randomNumber >= 100){
         randomNumber = rand();
         if (randomNumber % alpha == 0){
             msg.greeting = randomNumber;
             msgsnd(qid, (struct msgbuf *)&msg, size, 0);
-			cout << ": now sending " << msg.greeting << endl;
 
 			//Receive Message From Datahub
 			msgrcv(qid, (struct msgbuf *)&msg, size, 311, 0);
@@ -38,7 +44,7 @@ int main() {
         }
     }
 	//Send ProbeA Finished to Datahub
-	//strncpy(msg.greeting, "ProbeA terminated", 50);
+	strncpy(msg.termMessage, "ProbeA terminated", 50);
 	msgsnd(qid, (struct msgbuf *)&msg, size, 0);
 	
 
