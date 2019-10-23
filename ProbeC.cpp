@@ -20,6 +20,7 @@ int main(){
 		long mtype; // required
 		int greeting; // mesg content
 		int PID;
+		char termMessage[50]; //messege for termination
 	};
 
 	buf msg;

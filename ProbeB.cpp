@@ -21,16 +21,14 @@ int main() {
 		long mtype; // required
 		int greeting; // mesg content
 		int PID;
+		char termMessage[50]; //messege for termination
 	};
 
 	buf msg;
 	msg.PID = getpid();
 	int size = sizeof(msg)-sizeof(long);
-
 	int mtype = 167;
-	//sync with DataHub
-	msgsnd(qid, (struct msgbuf *)&msg, size, 0);
-	msgrcv(qid, (struct msgbuf *)&msg, size, 312, 0);
+	
    	while(true) {
         randomNumber = rand();
         if (randomNumber % beta == 0){

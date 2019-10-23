@@ -27,10 +27,9 @@ int main() {
 	int size = sizeof(msg)-sizeof(long);
 	msg.PID = getpid();
     msg.mtype = 211;
-
-	//sync with DataHub
-	msgsnd(qid, (struct msgbuf *)&msg, size, 0);
-	msgrcv(qid, (struct msgbuf *)&msg, size, 311, 0);
+	msg.greeting = randomNumber;
+	strncpy(msg.termMessage, "ProbeA Running", 50);	
+	
 	
     while (randomNumber >= 100){
         randomNumber = rand();
@@ -40,7 +39,7 @@ int main() {
 
 			//Receive Message From Datahub
 			msgrcv(qid, (struct msgbuf *)&msg, size, 311, 0);
-		
+			cout << "help" << endl;
         }
     }
 	//Send ProbeA Finished to Datahub
