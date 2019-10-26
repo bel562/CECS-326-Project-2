@@ -18,13 +18,13 @@ int main(){
 		long mtype; // required
 		int greeting; // mesg content
 		int PID;
-		char termMessage[50]; //messege for termination
+		bool termination; //messege for termination
 	};
 
 	buf msg;
 	int size = sizeof(msg)-sizeof(long);
 	msg.mtype = 311;
-	msg.greeting = 100;
+	msg.termination = false;
 
 	bool A_RunFlag, B_RunFlag, C_RunFlag; 
 	pid_t probeA_PID, probeB_PID, probeC_PID;
@@ -35,6 +35,7 @@ int main(){
 	//ProbeA-211
 	//ProbeB-167
 	//ProbeC-123
+	//DataHub-311
 	A_RunFlag = true;
 	B_RunFlag = false;
 	C_RunFlag = false;
@@ -42,19 +43,20 @@ int main(){
 	
 
 
-	while (A_RunFlag || B_RunFlag || C_RunFlag) {
+	while (!msg.termination) {
 
 		//***********ProbeA*************************
-		if (((string)msg.termMessage).compare("ProbeA terminated" ) != 0) {
+		if (A_RunFlag) {
 			msgrcv(qid, (struct msgbuf *)&msg, size, 211, 0);
-			cout << "ProbeA PID: " << msg.PID << "- Message: " << msg.greeting << endl;
-		
 
-			ProbeBCounter++;			
+			cout << "ProbeA PID: " << msg.PID << "- Message: " << msg.greeting << endl;
+			msg.mtype = 311;
+			ProbeBCounter++;	
+
 			//Send confirm rcv message to ProbeA
 			msgsnd(qid, (struct msgbuf *)&msg, size, 0);
 
-			if (((string)msg.termMessage).compare("ProbeA terminated") == 0) {
+			if (msg.termination) {
 				//change ProbeA_Active flag to false
 				A_RunFlag = false;
 			}
@@ -96,7 +98,7 @@ int main(){
 	
     // now safe to delete message queue
 	msgctl (qid, IPC_RMID, NULL);
-
+	cout << "DataHub now exits" << endl;
 	exit(0);
     
 }
