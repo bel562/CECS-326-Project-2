@@ -6,10 +6,12 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <cstdlib>
+#include "kill_patch.h"
 using namespace std;
 
+
 int main(){
-    int rho = 257;
+    int rho = 251;
 	long randomNumber = 0;
 	// create my msgQ with key value from ftok()
 	int qid = msgget(ftok(".",'u'), 0);
@@ -27,15 +29,19 @@ int main(){
 	int size = sizeof(msg)-sizeof(long);
 	msg.termination = false;
 	msg.mtype = 123;
-
+	string statement;
    	while(true) {
         randomNumber = rand();
         if (randomNumber % rho == 0){
             msg.greeting = randomNumber;
+			cout <<"about to send" << endl;
             msgsnd(qid, (struct msgbuf *)&msg, size, 0);
+			cout << "sent" << endl;
         }
+		
     }
 	
 
 
 }
+
