@@ -11,8 +11,8 @@
 using namespace std;
 
 int main() {
-    int beta = 271;
-	long randomNumber = 0;
+    int beta = 500341;
+	int randomNumber = 0;
 	// create my msgQ with key value from ftok()
 	int qid = msgget(ftok(".",'u'), 0);
 

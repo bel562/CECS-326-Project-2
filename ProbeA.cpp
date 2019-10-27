@@ -12,7 +12,7 @@
 using namespace std;
 
 int main() {
-    int alpha = 997;
+    int alpha = 1501441;
 	int randomNumber = 101;
 	int qid = msgget(ftok(".",'u'), 0);
 

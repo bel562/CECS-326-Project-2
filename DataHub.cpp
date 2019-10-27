@@ -49,57 +49,57 @@ int main(){
 
 		//***********ProbeA*************************
 		//Run message receive and send only if ProbeA is Still running
-		// if (A_RunFlag) {
-		// 				cout << "Receiving Probe A" << endl;
+		if (A_RunFlag) {
+						cout << "Receiving Probe A" << endl;
 
-		// 	msgrcv(qid, (struct msgbuf *)&msg, size, 211, 0);
+			msgrcv(qid, (struct msgbuf *)&msg, size, 211, 0);
 
-		// 	cout << "ProbeA PID: " << msg.PID << "- Message: " << msg.greeting << endl;
-		// 	msg.mtype = 311;
-		// 	ProbeBCounter++;	
+			cout << "ProbeA PID: " << msg.PID << "- Message: " << msg.greeting << endl;
+			msg.mtype = 311;
+			ProbeBCounter++;	
 
-		// 	//Send confirm rcv message to ProbeA
-		// 	msgsnd(qid, (struct msgbuf *)&msg, size, 0);
+			//Send confirm rcv message to ProbeA
+			msgsnd(qid, (struct msgbuf *)&msg, size, 0);
 
-		// 	if (msg.termination) {
-		// 		//change ProbeA_Active flag to false
-		// 		A_RunFlag = false;
-		// 		cout << "ProbeA PID:" << msg.PID << "- now exits" << endl;
-		// 	}
-		// }
+			if (msg.termination) {
+				//change ProbeA_Active flag to false
+				A_RunFlag = false;
+				cout << "ProbeA PID:" << msg.PID << "- now exits" << endl;
+			}
+		}
 
 
-		// // //***********Probe B************************
-		// //Run message receive and send only if ProbeB is Still running
-		// if (B_RunFlag) {
-		// 	cout << "Receiving Probe B" << endl;
-		// 	msgrcv(qid, (struct msgbuf *)&msg, size, 167, 0);
+		//***********Probe B************************
+		//Run message receive and send only if ProbeB is Still running
+		if (B_RunFlag) {
+			cout << "Receiving Probe B" << endl;
+			msgrcv(qid, (struct msgbuf *)&msg, size, 167, 0);
 
-		// 	cout << "ProbeB PID: " << msg.PID << "- Message: " << msg.greeting << endl;
-		// 	msg.mtype = 311;
-		// 	ProbeBCounter++;
+			cout << "ProbeB PID: " << msg.PID << "- Message: " << msg.greeting << endl;
+		
+			ProbeBCounter++;
 
-		// 	//ProbeB termination
-		// 	if (ProbeBCounter >= 10000) {
-		// 		//change ProbeB_Active flag to false
-		// 		B_RunFlag = false;
-		// 		force_patch(msg.PID);
-		// 		cout << "ProbeB PID:" << msg.PID << "- now exits" << endl;
-		// 	}
+			//ProbeB termination
+			if (ProbeBCounter >= 10000) {
+				//change ProbeB_Active flag to false
+				B_RunFlag = false;
+				force_patch(msg.PID);
+				cout << "ProbeB PID:" << msg.PID << "- now exits" << endl;
+			}
 			
 				
-		// }
+		}
 
-		// //***********Probe B************************
+		// //***********Probe C************************
 		if (C_RunFlag) {
 			cout << "Receiving Probe C" << endl;
 			msgrcv(qid, (struct msgbuf *)&msg, size, 123, 0);
 
 			cout << "ProbeC PID: " << msg.PID << "- Message: " << msg.greeting << endl;
-			msg.mtype = 311;
+		
 			ProbeBCounter++;
 
-			if (msg.termination) {
+			if (msg.greeting == 100) {
 			//change ProbeA_Active flag to false
 			C_RunFlag = false;
 			cout << "ProbeC PID:" << msg.PID << "- now exits" << endl;
