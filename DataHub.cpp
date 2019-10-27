@@ -9,6 +9,7 @@
 #include "force_patch.h"
 using namespace std;
 
+//This Program only will communicate with running Probes A,B, and C.
 int main(){
    // create my msgQ with key value ipfrom ftok()
 	int qid = msgget(ftok(".",'u'), IPC_EXCL|IPC_CREAT|0600);
@@ -37,16 +38,19 @@ int main(){
 	//ProbeC-123
 	//DataHub-311
 	A_RunFlag = true;
-	B_RunFlag = false;
+	B_RunFlag = true;
 	C_RunFlag = false;
 
 	
 
 
-	while (!msg.termination) {
+	while (A_RunFlag || B_RunFlag || C_RunFlag) {
 
 		//***********ProbeA*************************
+		//Run message receive and send only if ProbeA is Still running
 		if (A_RunFlag) {
+						cout << "Receiving Probe A" << endl;
+
 			msgrcv(qid, (struct msgbuf *)&msg, size, 211, 0);
 
 			cout << "ProbeA PID: " << msg.PID << "- Message: " << msg.greeting << endl;
@@ -59,20 +63,32 @@ int main(){
 			if (msg.termination) {
 				//change ProbeA_Active flag to false
 				A_RunFlag = false;
+				cout << "ProbeA PID:" << msg.PID << "- now exits" << endl;
 			}
 		}
 
 
 		// //***********Probe B************************
-		// msgrcv(qid, (struct msgbuf *)&msg, size, 167, IPC_NOWAIT);
-		// cout << "ProbeB Debug: " << msg.greeting << endl;
-		// probeB_PID =  getpid();
+		//Run message receive and send only if ProbeB is Still running
+		if (B_RunFlag) {
+			cout << "Receiving Probe B" << endl;
+			msgrcv(qid, (struct msgbuf *)&msg, size, 167, 0);
 
-		// //condition check if probe B sent a message
-		// if ( msg.greeting !=  -1  && msg.PID == probeB_PID) {	
-		// 	cout << "ProbeB PID: " << probeB_PID << "- Message: " << msg.greeting << endl;
-		// 	ProbeBCounter++;			
-		// }
+			cout << "ProbeB PID: " << msg.PID << "- Message: " << msg.greeting << endl;
+			msg.mtype = 311;
+			ProbeBCounter++;
+
+			//ProbeB termination
+			if (ProbeBCounter >= 10000) {
+				//change ProbeB_Active flag to false
+				B_RunFlag = false;
+				force_patch(msg.PID);
+				cout << "ProbeB PID:" << msg.PID << "- now exits" << endl;
+			}
+			
+				
+		}
+			
 
 		
 		// //***********Probe C************************
@@ -86,13 +102,7 @@ int main(){
 		// 	ProbeBCounter++;			
 		// }
 
-		//Probe B to be Terminated
-		// if (ProbeBCounter >= 10000) {
-		// 		cout << "ProbeB PID: " << probeB_PID << "- now exits" << endl;
-		// 		force_patch(probeB_PID);
-		// 		//change ProbeB_Active flag to false
-		// 		B_RunFlag = false;
-		// 	}
+		
 	}
     
 	

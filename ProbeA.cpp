@@ -40,22 +40,19 @@ int main() {
 
 			//Receive Message From Datahub
 			msgrcv(qid, (struct msgbuf *)&msg, size, 311, 0);
-			cout << "help" << endl;
         }
     }
 
 	//Send ProbeA Finished to Datahub
 	msg.mtype = 211;
 	msg.PID = getpid();
-	msg.termination = true; 
-
+	msg.termination = true;
 	msgsnd(qid, (struct msgbuf *)&msg, size, 0);
 
 	//Receive Message From Datahub
-	msgrcv(qid, (struct msgbuf *)&msg, size, 311, 0);
-	
+				cout << "Receiving DataHub termination" << endl;
 
-	cout << "ProbeA PID:" << getpid() << "- now exits" << endl;
+	msgrcv(qid, (struct msgbuf *)&msg, size, 311, 0);
 
 	exit(0);
 }

@@ -21,13 +21,14 @@ int main() {
 		long mtype; // required
 		int greeting; // mesg content
 		int PID;
-		char termMessage[50]; //messege for termination
+		bool termination; //messege for termination
 	};
 
 	buf msg;
+	msg.mtype = 167;
 	msg.PID = getpid();
+	msg.termination = false;
 	int size = sizeof(msg)-sizeof(long);
-	int mtype = 167;
 	
    	while(true) {
         randomNumber = rand();
