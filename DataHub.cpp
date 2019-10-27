@@ -7,6 +7,7 @@
 #include <sys/wait.h>
 #include <cstdlib>
 #include "force_patch.h"
+#include "kill_patch.h"
 using namespace std;
 
 //This Program only will communicate with running Probes A,B, and C.
