@@ -11,7 +11,7 @@
 using namespace std;
 
 int main() {
-    int beta = 500341;
+    int beta = 6359;
 	int randomNumber = 0;
 	// create my msgQ with key value from ftok()
 	int qid = msgget(ftok(".",'u'), 0);
@@ -22,6 +22,7 @@ int main() {
 		int greeting; // mesg content
 		int PID;
 		bool termination; //messege for termination
+		int ProbeNo = 2;
 	};
 
 	buf msg;

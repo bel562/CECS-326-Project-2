@@ -12,7 +12,7 @@
 using namespace std;
 
 int main() {
-    int alpha = 1501441;
+    int alpha = 19081;
 	int randomNumber = 101;
 	int qid = msgget(ftok(".",'u'), 0);
 
@@ -22,6 +22,7 @@ int main() {
 		int greeting; // mesg content
 		int PID;
 		bool termination; //messege for termination
+		int ProbeNo = 1;
 		
 	};
 	buf msg;
@@ -50,7 +51,7 @@ int main() {
 	msgsnd(qid, (struct msgbuf *)&msg, size, 0);
 
 	//Receive Message From Datahub
-				cout << "Receiving DataHub termination" << endl;
+	cout << "Receiving DataHub termination" << endl;
 
 	msgrcv(qid, (struct msgbuf *)&msg, size, 311, 0);
 

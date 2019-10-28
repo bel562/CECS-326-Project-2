@@ -21,6 +21,7 @@ int main(){
 		int greeting; // mesg content
 		int PID;
 		bool termination; //messege for termination
+		int ProbeNo = 4;
 	};
 
 	buf msg;
@@ -46,18 +47,18 @@ int main(){
 
 
 	while (A_RunFlag || B_RunFlag || C_RunFlag) {
+			
+		
+		cout << "Receiving Probe" << endl;
 
-		//***********ProbeA*************************
-		//Run message receive and send only if ProbeA is Still running
-		if (A_RunFlag) {
-						cout << "Receiving Probe A" << endl;
+		msgrcv(qid, (struct msgbuf *)&msg, size, -300, 0);
 
-			msgrcv(qid, (struct msgbuf *)&msg, size, 211, 0);
+		
+		msg.mtype = 311;
+		ProbeBCounter++;
 
-			cout << "ProbeA PID: " << msg.PID << "- Message: " << msg.greeting << endl;
-			msg.mtype = 311;
-			ProbeBCounter++;	
-
+		if (msg.ProbeNo == 1){
+			cout << msg.ProbeNo << " PID: " << msg.PID << "- Message: " << msg.greeting << endl;
 			//Send confirm rcv message to ProbeA
 			msgsnd(qid, (struct msgbuf *)&msg, size, 0);
 
@@ -67,47 +68,26 @@ int main(){
 				cout << "ProbeA PID:" << msg.PID << "- now exits" << endl;
 			}
 		}
-
-
-		//***********Probe B************************
-		//Run message receive and send only if ProbeB is Still running
-		if (B_RunFlag) {
-			cout << "Receiving Probe B" << endl;
-			msgrcv(qid, (struct msgbuf *)&msg, size, 167, 0);
-
-			cout << "ProbeB PID: " << msg.PID << "- Message: " << msg.greeting << endl;
-		
-			ProbeBCounter++;
-
-			//ProbeB termination
+		else if(msg.ProbeNo == 2){
+			cout << msg.ProbeNo << " PID: " << msg.PID << "- Message: " << msg.greeting << endl;
 			if (ProbeBCounter >= 10000) {
 				//change ProbeB_Active flag to false
 				B_RunFlag = false;
 				force_patch(msg.PID);
 				cout << "ProbeB PID:" << msg.PID << "- now exits" << endl;
 			}
-			
-				
 		}
-
-		// //***********Probe C************************
-		if (C_RunFlag) {
-			cout << "Receiving Probe C" << endl;
-			msgrcv(qid, (struct msgbuf *)&msg, size, 123, 0);
-
-			cout << "ProbeC PID: " << msg.PID << "- Message: " << msg.greeting << endl;
-		
-			ProbeBCounter++;
-
-			if (msg.greeting == 100) {
-			//change ProbeA_Active flag to false
-			C_RunFlag = false;
-			cout << "ProbeC PID:" << msg.PID << "- now exits" << endl;
-			}
+		else if(msg.ProbeNo == 3){
+			cout << msg.ProbeNo << " PID: " << msg.PID << "- Message: " << msg.greeting << endl;
+			
+		}
+		else if (msg.ProbeNo == 0 && msg.greeting == 100) {
+				//change ProbeC_Active flag to false
+				C_RunFlag = false;
+				cout << "ProbeC PID:" << msg.PID << "- now exits" << endl;
 		}
 		
-			
-
+		
 		
 		
 
